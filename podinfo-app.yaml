@@ -9,14 +9,19 @@ spec:
     repoURL: https://stefanprodan.github.io/podinfo
     chart: podinfo
     targetRevision: "*"
+
     helm:
       values: |
         replicaCount: 2
         service:
           type: NodePort
+        ui:
+          message: "Hello from Yossi 🚀"
+
   destination:
     server: https://kubernetes.default.svc
     namespace: podinfo
+
   syncPolicy:
     automated:
       prune: true
