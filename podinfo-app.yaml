@@ -5,18 +5,20 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://stefanprodan.github.io/podinfo
-    chart: podinfo
-    targetRevision: "*"
 
-    helm:
-      values: |
-        replicaCount: {{.Values.replicasCount}}
-        service:
-          type: NodePort
-        ui:
-          message: "Hello from Yossi 🚀"
+  sources:
+    # ✅ Helm chart source
+    - repoURL: https://stefanprodan.github.io/podinfo
+      chart: podinfo
+      targetRevision: "*"
+      helm:
+        valueFiles:
+          - $values/values.yaml   # 👈 adjust path
+
+    # ✅ Your Git repo (values source)
+    - repoURL: https://github.com/yossisp1972/gitops.git
+      targetRevision: HEAD
+      ref: values
 
   destination:
     server: https://kubernetes.default.svc
